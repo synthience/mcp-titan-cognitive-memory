@@ -131,4 +131,36 @@ describe('TitanExpressServer Tests', () => {
     expect(response.status).toBe(500);
     expect(response.body).toHaveProperty('error');
   });
+
+  test('Handles unknown tool in switch statement', async () => {
+    const response = await request(app)
+      .post('/unknown_tool')
+      .send({
+        params: {
+          name: 'unknown_tool',
+          arguments: {}
+        }
+      });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('error');
+    expect(response.body.error.code).toBe('MethodNotFound');
+    expect(response.body.error.message).toBe('Unknown tool: unknown_tool');
+  });
+
+  test('CallToolResultSchema.parse return statement', async () => {
+    const response = await request(app)
+      .post('/init')
+      .send({
+        params: {
+          name: 'init_model',
+          arguments: {}
+        }
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('content');
+    expect(response.body.content[0].type).toBe('text');
+    expect(response.body.content[0].text).toContain('Model initialized');
+  });
 });
