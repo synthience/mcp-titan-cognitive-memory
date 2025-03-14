@@ -330,4 +330,35 @@ describe('TitanMemoryModel', () => {
         .rejects.toThrow();
     });
   });
+
+  test('Handles unknown tool in switch statement', () => {
+    const unknownTool = 'unknown_tool';
+    const request = {
+      params: {
+        name: unknownTool,
+        arguments: {}
+      }
+    };
+
+    const result = model.handleRequest(request);
+
+    expect(result.error).toBeDefined();
+    expect(result.error.code).toBe('MethodNotFound');
+    expect(result.error.message).toBe(`Unknown tool: ${unknownTool}`);
+  });
+
+  test('CallToolResultSchema.parse return statement', () => {
+    const request = {
+      params: {
+        name: 'init_model',
+        arguments: {}
+      }
+    };
+
+    const result = model.handleRequest(request);
+
+    expect(result.content).toBeDefined();
+    expect(result.content[0].type).toBe('text');
+    expect(result.content[0].text).toContain('Model initialized');
+  });
 });

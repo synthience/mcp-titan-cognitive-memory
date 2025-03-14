@@ -219,7 +219,6 @@ class TitanMemoryServer {
             }
 
             const xT = wrapTensor(tf.tensor1d(args.x));
-            const xT = wrapTensor(tf.tensor1d(x));
             const memoryT = wrapTensor(this.memoryVec);
 
             const { predicted, newMemory, surprise } = this.model.forward(xT, memoryT);
@@ -253,7 +252,6 @@ class TitanMemoryServer {
             }
 
             await this.model.saveModel(args.path);
-            await this.model.saveModel(path);
 
             return CallToolResultSchema.parse({
               content: [{
@@ -273,7 +271,6 @@ class TitanMemoryServer {
             }
 
             await this.model.loadModel(args.path);
-            await this.model.loadModel(path);
 
             return CallToolResultSchema.parse({
               content: [{
@@ -305,7 +302,6 @@ class TitanMemoryServer {
               throw new Error('Invalid sequence format');
             }
             const { sequence } = args;
-          }
 
             const outputs: tf.Tensor[] = [];
             const metrics: any[] = [];
@@ -360,13 +356,13 @@ class TitanMemoryServer {
                 text: JSON.stringify(result, null, 2)
               }]
             });
-        }
+          }
 
           default:
-    return CallToolResultSchema.parse({
-      error: {
-        code: ErrorCode.MethodNotFound,
-        message: `Unknown tool: ${request.params.name}`
+            return CallToolResultSchema.parse({
+              error: {
+                code: ErrorCode.MethodNotFound,
+                message: `Unknown tool: ${request.params.name}`
               }
             });
         }
@@ -375,7 +371,7 @@ class TitanMemoryServer {
         return CallToolResultSchema.parse({
           error: {
             code: ErrorCode.InternalError,
-            message: `Error: ${ errorMessage }`
+            message: `Error: ${errorMessage}`
           }
         });
       }
