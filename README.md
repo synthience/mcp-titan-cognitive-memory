@@ -27,6 +27,13 @@ These features align with the paper's goals of improving code understanding and 
 - Model persistence (save/load)
 - Memory state management
 - Full MCP tool integration
+- Multi-head attention mechanism for selective memory updates
+- Hierarchical memory structure with multiple levels of memory
+- Dynamic memory allocation mechanism
+- Memory replay mechanism
+- Contextual memory updates
+- Memory compression and expansion techniques
+- Integration with a large language model (LLM) as a cache
 
 ## 📦 Installation
 
@@ -99,6 +106,22 @@ Train the model on a sequence of vectors.
 }
 ```
 
+### 8. 🗄️ store_memory_state
+Store the current memory state in the LLM cache.
+```typescript
+{
+  key: string; // Key to store the memory state under
+}
+```
+
+### 9. 🔍 retrieve_memory_state
+Retrieve a memory state from the LLM cache.
+```typescript
+{
+  key: string; // Key to retrieve the memory state from
+}
+```
+
 ## 🌟 Example Usage
 
 ```typescript
@@ -117,6 +140,12 @@ await callTool('train_sequence', { sequence });
 const result = await callTool('forward_pass', {
   x: [1, 0, 0, /* ... */]
 });
+
+// Store memory state in LLM cache
+await callTool('store_memory_state', { key: 'example_key' });
+
+// Retrieve memory state from LLM cache
+await callTool('retrieve_memory_state', { key: 'example_key' });
 ```
 
 ## 🔧 Technical Details
@@ -127,6 +156,13 @@ const result = await callTool('forward_pass', {
 - Memory management with proper tensor cleanup
 - Type-safe implementation with TypeScript
 - Comprehensive error handling
+- Multi-head attention mechanism for selective memory updates
+- Hierarchical memory structure with multiple levels of memory
+- Dynamic memory allocation mechanism
+- Memory replay mechanism
+- Contextual memory updates
+- Memory compression and expansion techniques
+- Integration with a large language model (LLM) as a cache
 
 ## 🧪 Testing
 
@@ -137,6 +173,13 @@ The project includes comprehensive tests covering:
 - Model persistence
 - Edge cases and error handling
 - Tensor cleanup and memory management
+- Multi-head attention mechanism
+- Hierarchical memory structure
+- Dynamic memory allocation mechanism
+- Memory replay mechanism
+- Contextual memory updates
+- Memory compression and expansion techniques
+- Integration with a large language model (LLM) as a cache
 
 Run tests with:
 ```bash
@@ -150,6 +193,13 @@ npm test
 - Uses type-safe MCP tool definitions
 - Maintains memory state between operations
 - Handles floating-point precision issues with epsilon tolerance
+- Implements multi-head attention mechanism for selective memory updates
+- Introduces hierarchical memory structure with multiple levels of memory
+- Implements dynamic memory allocation mechanism
+- Introduces memory replay mechanism
+- Implements contextual memory updates
+- Introduces memory compression and expansion techniques
+- Integrates with a large language model (LLM) as a cache
 
 ## 📝 License
 
