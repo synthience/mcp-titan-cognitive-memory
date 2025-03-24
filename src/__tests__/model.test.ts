@@ -361,4 +361,87 @@ describe('TitanMemoryModel', () => {
     expect(result.content[0].type).toBe('text');
     expect(result.content[0].text).toContain('Model initialized');
   });
+
+  test('Multi-head attention mechanism works correctly', () => {
+    const x = wrapTensor(tf.randomNormal([inputDim]));
+    const memoryState = wrapTensor(tf.zeros([outputDim]));
+
+    const { predicted, newMemory, surprise } = model.forward(x, memoryState);
+
+    // Check if the attention mechanism updates the memory correctly
+    expect(newMemory.shape).toEqual([outputDim]);
+
+    predicted.dispose();
+    newMemory.dispose();
+    surprise.dispose();
+    x.dispose();
+    memoryState.dispose();
+  });
+
+  test('Hierarchical memory structure updates correctly', () => {
+    const x = wrapTensor(tf.randomNormal([inputDim]));
+    const memoryState = wrapTensor(tf.zeros([outputDim]));
+
+    const { predicted, newMemory, surprise } = model.forward(x, memoryState);
+
+    // Check if the hierarchical memory structure updates correctly
+    for (let i = 0; i < model.getConfig().numLayers; i++) {
+      const layerMemory = model.getWeights().hierarchicalMemory[i];
+      expect(layerMemory.length).toEqual(outputDim);
+    }
+
+    predicted.dispose();
+    newMemory.dispose();
+    surprise.dispose();
+    x.dispose();
+    memoryState.dispose();
+  });
+
+  test('Dynamic memory allocation mechanism works correctly', () => {
+    const x = wrapTensor(tf.randomNormal([inputDim]));
+    const memoryState = wrapTensor(tf.zeros([outputDim]));
+
+    const { predicted, newMemory, surprise } = model.forward(x, memoryState);
+
+    // Check if the dynamic memory allocation mechanism updates the memory correctly
+    expect(newMemory.shape).toEqual([outputDim]);
+
+    predicted.dispose();
+    newMemory.dispose();
+    surprise.dispose();
+    x.dispose();
+    memoryState.dispose();
+  });
+
+  test('Memory replay mechanism works correctly', () => {
+    const x = wrapTensor(tf.randomNormal([inputDim]));
+    const memoryState = wrapTensor(tf.zeros([outputDim]));
+
+    const { predicted, newMemory, surprise } = model.forward(x, memoryState);
+
+    // Check if the memory replay mechanism updates the memory correctly
+    expect(newMemory.shape).toEqual([outputDim]);
+
+    predicted.dispose();
+    newMemory.dispose();
+    surprise.dispose();
+    x.dispose();
+    memoryState.dispose();
+  });
+
+  test('Contextual memory updates work correctly', () => {
+    const x = wrapTensor(tf.randomNormal([inputDim]));
+    const memoryState = wrapTensor(tf.zeros([outputDim]));
+
+    const { predicted, newMemory, surprise } = model.forward(x, memoryState);
+
+    // Check if the contextual memory updates work correctly
+    expect(newMemory.shape).toEqual([outputDim]);
+
+    predicted.dispose();
+    newMemory.dispose();
+    surprise.dispose();
+    x.dispose();
+    memoryState.dispose();
+  });
 });

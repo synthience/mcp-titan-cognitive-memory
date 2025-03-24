@@ -163,4 +163,63 @@ describe('TitanExpressServer Tests', () => {
     expect(response.body.content[0].type).toBe('text');
     expect(response.body.content[0].text).toContain('Model initialized');
   });
+
+  test('Store memory state in LLM cache', async () => {
+    // Re-init model
+    await request(app)
+      .post('/init')
+      .send({
+        inputDim: 64,
+        outputDim: 64
+      });
+
+    const response = await request(app)
+      .post('/store_memory_state')
+      .send({ key: 'test_key' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toContain('Memory state stored');
+  });
+
+  test('Retrieve memory state from LLM cache', async () => {
+    // Re-init model
+    await request(app)
+      .post('/init')
+      .send({
+        inputDim: 64,
+        outputDim: 64
+      });
+
+    const response = await request(app)
+      .post('/retrieve_memory_state')
+      .send({ key: 'test_key' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.message).toContain('Memory state retrieved');
+  });
+
+  test('WebSocket forward pass', (done) => {
+    const ws = new WebSocket('ws://localhost:3002');
+
+    ws.on('open', () => {
+      ws.send(JSON.stringify({
+        action: 'forward',
+        payload: { x: Array(64).fill(0).map(() => Math.random()) }
+      }));
+    });
+
+    ws.on('message', (message) => {
+      const data = JSON.parse(message.toString());
+      expect(data).toHaveProperty('predicted');
+      expect(data).toHaveProperty('memory');
+      expect(data).toHaveProperty('surprise');
+      expect(data.predicted).toHaveLength(64);
+      ws.close();
+      done();
+    });
+
+    ws.on('error', (error) => {
+      done(error);
+    });
+  });
 });

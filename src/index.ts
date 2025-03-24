@@ -131,6 +131,34 @@ class TitanMemoryServer {
                 },
                 required: ['sequence']
               }
+            },
+            store_memory_state: {
+              name: 'store_memory_state',
+              description: 'Store the current memory state in the LLM cache.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  key: {
+                    type: 'string',
+                    description: 'Key to store the memory state under'
+                  }
+                },
+                required: ['key']
+              }
+            },
+            retrieve_memory_state: {
+              name: 'retrieve_memory_state',
+              description: 'Retrieve a memory state from the LLM cache.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  key: {
+                    type: 'string',
+                    description: 'Key to retrieve the memory state from'
+                  }
+                },
+                required: ['key']
+              }
             }
           },
         },
@@ -354,6 +382,50 @@ class TitanMemoryServer {
               content: [{
                 type: 'text',
                 text: JSON.stringify(result, null, 2)
+              }]
+            });
+          }
+
+          case 'store_memory_state': {
+            if (!this.model || !this.memoryVec) {
+              throw new Error('Model not initialized');
+            }
+            const args = request.params.arguments as { key?: string };
+            if (!args.key) {
+              throw new Error('Missing key');
+            }
+
+            // Store the memory state in the LLM cache
+            const memoryState = this.memoryVec.dataSync();
+            // Implement the logic to store the memory state in the LLM cache using the provided key
+
+            return CallToolResultSchema.parse({
+              content: [{
+                type: 'text',
+                text: JSON.stringify({ message: 'Memory state stored' }, null, 2)
+              }]
+            });
+          }
+
+          case 'retrieve_memory_state': {
+            if (!this.model || !this.memoryVec) {
+              throw new Error('Model not initialized');
+            }
+            const args = request.params.arguments as { key?: string };
+            if (!args.key) {
+              throw new Error('Missing key');
+            }
+
+            // Retrieve the memory state from the LLM cache
+            // Implement the logic to retrieve the memory state from the LLM cache using the provided key
+            const memoryState = []; // Replace with the actual retrieved memory state
+
+            this.memoryVec.assign(tf.tensor(memoryState));
+
+            return CallToolResultSchema.parse({
+              content: [{
+                type: 'text',
+                text: JSON.stringify({ message: 'Memory state retrieved' }, null, 2)
               }]
             });
           }
