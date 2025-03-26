@@ -8,6 +8,10 @@ Follow us on X
 
 An implementation inspired by Google Research's paper ["Generative AI for Programming: A Common Task Framework"](https://arxiv.org/abs/2501.00663). This server provides a neural memory system that can learn and predict sequences while maintaining state through a memory vector, following principles outlined in the research for improved code generation and understanding.
 
+<a href="https://glama.ai/mcp/servers/@synthience/mcp-titan-cognitive-memory">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@synthience/mcp-titan-cognitive-memory/badge" alt="Titan Memory Server MCP server" />
+</a>
+
 ## 📚 Research Background
 
 This implementation draws from the concepts presented in the Google Research paper (Muennighoff et al., 2024) which introduces a framework for evaluating and improving code generation models. The Titan Memory Server implements key concepts from the paper:
